@@ -46,6 +46,19 @@ Frontend dependencies (React, Recharts, Vite, TypeScript, Tailwind CSS) are decl
 
 Run the frontend and backend in separate terminals with `npm run dev` from each respective directory.
 
+## Free hosted deployment
+
+Render and Neon are sufficient for a hosted deployment:
+
+- Use Neon for `DATABASE_URL`.
+- Deploy the backend as a Render Docker web service.
+- Deploy the frontend as a Render static site.
+- Set `FRONTEND_URL` on the backend to the exact frontend URL, with no trailing slash.
+- Set `VITE_API_URL` on the frontend to the exact backend URL, with no trailing slash.
+- Set `FRED_API_KEY` and `FINNHUB_API_KEY` only in Render environment variables; never prefix provider keys with `VITE_`.
+
+The repository includes [render.yaml](render.yaml) as a Render Blueprint starting point. After creating the services, enter the Neon connection string and the public service URLs in the Render environment settings.
+
 ## Project documentation
 
 See [`DOC/README.md`](DOC/README.md) for the project documents and [the roadmap](DOC/roadmap.md) for implementation milestones.

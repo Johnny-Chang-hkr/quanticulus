@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: quanticulus-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URL
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: FRED_API_KEY
+        sync: false
+      - key: FRED_BASE_URL
+        value: https://api.stlouisfed.org/fred
+      - key: FINNHUB_API_KEY
+        sync: false
+      - key: FINNHUB_BASE_URL
+        value: https://finnhub.io/api/v1
+
+  - type: static
+    name: quanticulus
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
