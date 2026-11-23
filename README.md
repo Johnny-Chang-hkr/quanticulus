@@ -49,3 +49,7 @@ Run the frontend and backend in separate terminals with `npm run dev` from each 
 ## Project documentation
 
 See [`DOC/README.md`](DOC/README.md) for the project documents and [the roadmap](DOC/roadmap.md) for implementation milestones.
+
+## Docker Compose
+
+Copy `.env.example` to `.env`, replace the sample password, and run `docker compose up --build`. Open `http://localhost:8080`. The local stack includes PostgreSQL and is bound to loopback for one authorized personal user; do not expose it publicly or redistribute Finnhub data. See [deployment and provider terms](DOC/provider-terms.md) and [the development guide](DOC/development.md).

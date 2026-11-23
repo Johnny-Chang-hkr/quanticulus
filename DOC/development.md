@@ -26,6 +26,8 @@ python -m pip install -r analytics/requirements.txt
 
 ## Run locally
 
+For an in-memory/no-database local run, leave `DATABASE_URL` unset. To persist local observations, run PostgreSQL and set `DATABASE_URL` to its connection string.
+
 Start the backend in one terminal:
 
 ```powershell
@@ -50,6 +52,32 @@ npm run build
 cd ../frontend
 npm run build
 ```
+
+## Smoke checks
+
+Install the frontend dependencies, including the Playwright test runner, and install its Chromium browser once:
+
+```powershell
+cd frontend
+npm install
+npx playwright install chromium
+npm test
+```
+
+The smoke suite starts the backend and frontend development servers, checks the API health and invalid-ticker responses, and verifies the dashboard and company lookup with provider data mocked in the browser.
+
+## Local Docker deployment
+
+1. Copy `.env.example` to `.env`, set FRED/Finnhub keys and replace the example PostgreSQL password with a strong local secret.
+2. Start the stack with `docker compose up --build`.
+3. Open `http://localhost:8080`. Compose binds the service to loopback only; do not publish it to a shared or public network.
+4. Stop it with `docker compose down`. The named PostgreSQL volume is retained.
+
+The backend runs the idempotent schema migration at startup and retains at most five years of daily candle/economic observations. Compose passes PostgreSQL connection settings as container environment variables; local Node development can instead use a local `DATABASE_URL`. API health reports provider configuration and PostgreSQL reachability. Docker health checks gate service startup.
+
+The included deployment is for a single authorized personal user only. See [provider terms and deployment boundary](./provider-terms.md) before changing the network exposure or audience.
+
+Before a Finnhub subscription ends, stop the stack and delete its database volume with `docker compose down -v`. This irreversibly deletes all saved market and FRED history; the project does not configure database backups.
 
 ## Troubleshooting
 

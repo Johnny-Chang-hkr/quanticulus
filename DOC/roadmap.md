@@ -4,7 +4,7 @@
 
 Quanticulus combines macroeconomic releases and market data to help users explore market conditions. The product should make data dates and sources visible, explain how derived metrics are calculated, and present any forecasts as uncertain scenarios rather than promises.
 
-## Phase 1 — Foundation (in progress)
+## Phase 1 — Foundation
 
 - [x] Create React, TypeScript, and Vite frontend.
 - [x] Create Express and TypeScript backend.
@@ -17,42 +17,42 @@ Quanticulus combines macroeconomic releases and market data to help users explor
 - [x] Confirm local credentials work for FRED series, Finnhub quotes, and company profiles.
 - [ ] Resolve Finnhub candle access (currently denied) and news endpoint timeout for the configured account.
 - [x] Add loading, empty, and provider error states for individual data panels.
-- [ ] Add a small set of API and UI smoke checks.
+- [x] Add a small set of API and UI smoke checks.
 
 ## Phase 2 — Data quality and usability
 
 - [x] Add interactive symbol lookup with company profile and quote.
-- [ ] Add a stock detail page with historical prices when Finnhub candle access is available.
-- [ ] Add economic indicator detail views with selectable date ranges and release frequencies.
-- [ ] Show source observation dates, units, and last refresh times consistently.
-- [ ] Add server-side caching and request throttling that respect FRED and Finnhub plan limits.
-- [ ] Add PostgreSQL schema and persistence only after defining retention and refresh requirements.
+- [x] Add a stock detail page with historical prices and a saved-history fallback (live provider access still requires entitlement).
+- [x] Add economic indicator detail views with selectable date ranges and provider-supported frequencies.
+- [x] Show source observation dates, units, and last refresh times consistently.
+- [x] Add server-side caching and request throttling within provider plan limits.
+- [x] Add PostgreSQL schema and persistence (five-year retention; provider-specific refresh/cache windows documented).
 
 ## Phase 3 — Descriptive analysis
 
-- [ ] Calculate returns, rolling volatility, and moving averages from price history.
-- [ ] Align economic series and asset prices by date and documented frequency rules.
-- [ ] Add correlation views with sample windows and observation counts.
-- [ ] Build a transparent market-condition score with documented components and sensitivity controls.
+- [x] Calculate returns, rolling volatility, and moving averages from price history.
+- [x] Align economic series and asset prices by date and documented frequency rules.
+- [x] Add correlation views with sample windows and observation counts.
+- [x] Build a transparent market-condition score with documented components and sensitivity controls.
 
 ## Phase 4 — Forecast experiments
 
-- [ ] Establish simple baselines before fitting more complex models.
-- [ ] Create time-aware train, validation, and test periods to avoid look-ahead leakage.
-- [ ] Evaluate against baselines with suitable error and classification metrics.
-- [ ] Display forecast ranges, assumptions, and historical evaluation results.
-- [ ] Keep prediction outputs labeled as estimates with uncertainty.
+- [x] Establish a simple five-trading-day SPY baseline.
+- [x] Create time-aware walk-forward evaluation to avoid look-ahead leakage.
+- [x] Evaluate against a zero-return baseline with error metrics.
+- [x] Display forecast ranges, assumptions, and historical evaluation results.
+- [x] Keep prediction outputs labeled as estimates with uncertainty.
 
 ## Phase 5 — Operational readiness
 
-- [ ] Add automated checks, structured logs, and health/provider status reporting.
-- [ ] Add secure deployment configuration and secret management.
-- [ ] Review data-provider terms, limits, and attribution requirements for the intended deployment.
-- [ ] Add accessibility and responsive layout review.
+- [x] Add CI checks, structured logs, API rate limiting, and health/provider status reporting.
+- [x] Add secure local Docker deployment configuration and runtime secret injection.
+- [x] Review data-provider terms, limits, deletion obligations, and required FRED attribution for personal local deployment.
+- [x] Add accessible controls and responsive layout smoke coverage.
 
 ## Current working slice
 
-The current slice is a live-data dashboard. The configured credentials returned all seven FRED indicators, quotes for SPY, QQQ, and DIA, and company profile and quote data for AAPL. Finnhub returned HTTP 403 for candle history and the general news request timed out during the current check. The dashboard reports those endpoint failures instead of inventing data. API responses are requested by the backend so provider keys are not sent to the browser.
+The project now includes historical and economic detail views, descriptive metrics, a walk-forward baseline, five-year PostgreSQL persistence, provider caching/throttling, and a loopback-only Docker Compose deployment. The configured Finnhub account previously returned HTTP 403 for candle history and timed out on general news; live endpoint access remains an external account entitlement/availability blocker. See [provider terms](provider-terms.md) before changing the local single-user deployment boundary.
 
 
 
